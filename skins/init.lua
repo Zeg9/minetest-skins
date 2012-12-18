@@ -23,6 +23,37 @@ end
 
 dofile(minetest.get_modpath("skins").."/skinlist.lua")
 
+skins.file = minetest.get_worldpath() .. "/skins.mt"
+skins.load = function()
+	local input = io.open(skins.file, "r")
+	local data = nil
+	if input then
+		data = input:read('*all')
+	end
+	if data and data ~= "" then
+		lines = string.split(data,"\n")
+		for _, line in ipairs(lines) do
+			data = string.split(line, ' ', 2)
+			skins.skins[data[1]] = data[2]
+			print(dump(data))
+		end
+		io.close(input)
+	end
+end
+print("[Skins] Loading skins...")
+skins.load()
+print(dump(skins.skins))
+
+skins.save = function()
+	local output = io.open(skins.file,'w')
+	for name, skin in pairs(skins.skins) do
+		if name and skin then
+			output:write(name .. " " .. skin .. "\n")
+		end
+	end
+	io.close(output)
+end
+
 skins.update_player_skin = function(player)
 	name = player:get_player_name()
 	if skins.get_type(skins.skins[name]) == skins.type.SPRITE then
@@ -38,6 +69,7 @@ skins.update_player_skin = function(player)
 			visual_size = {x=1, y=1},
 		})
 	end
+	skins.save()
 end
 
 skins.formspec = {}
