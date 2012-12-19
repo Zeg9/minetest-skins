@@ -42,7 +42,7 @@ skins.load = function()
 end
 print("[Skins] Loading skins...")
 skins.load()
-print(dump(skins.skins))
+print("[Skins] Done loading !")
 
 skins.save = function()
 	local output = io.open(skins.file,'w')
@@ -73,7 +73,8 @@ skins.update_player_skin = function(player)
 end
 
 skins.formspec = {}
-skins.formspec.main = function(name, page)
+skins.formspec.main = function(name)
+	page = skins.pages[name]
 	if page == nil then page = 0 end
 	local formspec = "size[8,7.5]"
 		.. "button[0,0;2,.5;main;Back]"
@@ -88,21 +89,25 @@ skins.formspec.main = function(name, page)
 	local imodel = 0
 	local isprite = 0
 	local smodel = 0 -- Skip models, used for pages
-	local ssprite = 0 -- Skip sprites, used for pages (page handling needs cleanup)
+	local ssprite = 0 -- Skip sprites, used for pages
 	for i, skin in ipairs(skins.list) do
-		if skins.get_type(skin) == skins.type.MODEL and imodel < 8 then
+		if skins.get_type(skin) == skins.type.MODEL then
 			if smodel < page then smodel = smodel + 1 else
-				if imodel < 4 then
-					formspec = formspec .. "image_button["..(imodel*2)..",2;2,1;"..skin..".png;skins_set_"..i..";]"
-				else
-					formspec = formspec .. "image_button["..((imodel-4)*2)..",3;2,1;"..skin..".png;skins_set_"..i..";]"
+				if imodel < 8 then
+					if imodel < 4 then
+						formspec = formspec .. "image_button["..(imodel*2)..",2;2,1;"..skin..".png;skins_set_"..i..";]"
+					else
+						formspec = formspec .. "image_button["..((imodel-4)*2)..",3;2,1;"..skin..".png;skins_set_"..i..";]"
+					end
 				end
 				imodel = imodel +1
 			end
 		end
-		if skins.get_type(skin) == skins.type.SPRITE and isprite < 8 then
+		if skins.get_type(skin) == skins.type.SPRITE then
 			if ssprite < page then ssprite = ssprite + 1 else
-				formspec = formspec .. "image_button["..(isprite)..",4.5;1,2;"..skin..".png;skins_set_"..i..";]"
+				if isprite < 8 then
+					formspec = formspec .. "image_button["..(isprite)..",4.5;1,2;"..skin..".png;skins_set_"..i..";]"
+				end
 				isprite = isprite +1
 			end
 		end
@@ -116,6 +121,8 @@ skins.formspec.main = function(name, page)
 	end
 	return formspec
 end
+
+skins.pages = {}
 
 
 minetest.register_on_joinplayer(function(player)
@@ -137,7 +144,8 @@ minetest.register_on_player_receive_fields(function(player,formname,fields)
 			inventory_plus.set_inventory_formspec(player,skins.formspec.main(player:get_player_name()))
 		end
 		if string.sub(field,0,string.len("skins_page_")) == "skins_page_" then
-			inventory_plus.set_inventory_formspec(player,skins.formspec.main(player:get_player_name(),tonumber(string.sub(field,string.len("skins_page_")+1))))
+			skins.pages[player:get_player_name()] = tonumber(string.sub(field,string.len("skins_page_")+1))
+			inventory_plus.set_inventory_formspec(player,skins.formspec.main(player:get_player_name()))
 		end
 	end
 end)
