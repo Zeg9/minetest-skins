@@ -92,7 +92,7 @@ skins.formspec.main = function(name)
 	local ssprite = 0 -- Skip sprites, used for pages
 	for i, skin in ipairs(skins.list) do
 		if skins.get_type(skin) == skins.type.MODEL then
-			if smodel < page then smodel = smodel + 1 else
+			if smodel < page*8 then smodel = smodel + 1 else
 				if imodel < 8 then
 					if imodel < 4 then
 						formspec = formspec .. "image_button["..(imodel*2)..",2;2,1;"..skin..".png;skins_set_"..i..";]"
@@ -104,7 +104,7 @@ skins.formspec.main = function(name)
 			end
 		end
 		if skins.get_type(skin) == skins.type.SPRITE then
-			if ssprite < page then ssprite = ssprite + 1 else
+			if ssprite < page*8 then ssprite = ssprite + 1 else
 				if isprite < 8 then
 					formspec = formspec .. "image_button["..(isprite)..",4.5;1,2;"..skin..".png;skins_set_"..i..";]"
 				end
