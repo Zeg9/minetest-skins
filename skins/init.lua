@@ -35,13 +35,10 @@ skins.load = function()
 		for _, line in ipairs(lines) do
 			data = string.split(line, ' ', 2)
 			skins.skins[data[1]] = data[2]
-			print(dump(data))
 		end
 		io.close(input)
 	end
 end
-print("[Skins] Loading skins...")
-skins.load()
 print("[Skins] Done loading !")
 
 skins.save = function()

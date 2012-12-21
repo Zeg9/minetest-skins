@@ -5,7 +5,6 @@
 
 skins.list = {}
 skins.add = function(skin)
-	print("Added skin: "..skin)
 	table.insert(skins.list,skin)
 end
 
