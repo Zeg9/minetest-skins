@@ -1,0 +1,6 @@
+minetest-skins
+==============
+
+Skins mod for minetest.
+Use install_skin.py -3d to add a 3D skin,
+install_skin.py -2d to add a 2D skin.

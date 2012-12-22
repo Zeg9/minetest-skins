@@ -6,15 +6,18 @@ from shutil import copyfile
 skinspath = "skins/textures"
 
 sprite = False
-if '-s' in argv:
+if '-2d' in argv:
 	sprite = True
+if not sprite and not '-3d' in argv:
+	print("Usage:",argv[0]," <-2d|-3d> <files...>")
+	exit(1)
 
 fnbase = skinspath + "/character_"
 if sprite:
 	fnbase = skinspath + "/player_"
 
 for f in argv:
-	if f == '-s' or f == argv[0]:
+	if f[0] == '-' or f == argv[0]:
 		continue
 	if sprite and "_back.png" in f:
 		continue
