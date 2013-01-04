@@ -39,6 +39,7 @@ skins.load = function()
 		io.close(input)
 	end
 end
+skins.load()
 print("[Skins] Done loading !")
 
 skins.save = function()
