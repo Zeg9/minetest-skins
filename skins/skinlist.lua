@@ -9,13 +9,19 @@ skins.add = function(skin)
 end
 
 id = 1
-while io.open(minetest.get_modpath("skins").."/textures/player_"..id..".png") do
+while true do
+	local f = io.open(minetest.get_modpath("skins").."/textures/player_"..id..".png")
+	if (not f) then break end
+	f:close()
 	skins.add("player_"..id)
 	id = id +1
 end
 
 id = 1
-while io.open(minetest.get_modpath("skins").."/textures/character_"..id..".png") do
+while true do
+	local f = io.open(minetest.get_modpath("skins").."/textures/character_"..id..".png")
+	if (not f) then break end
+	f:close()
 	skins.add("character_"..id)
 	id = id +1
 end
