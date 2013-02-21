@@ -67,7 +67,6 @@ skins.update_player_skin = function(player)
 			visual_size = {x=1, y=1},
 		})
 	end
-	skins.save()
 end
 
 skins.formspec = {}
@@ -139,6 +138,7 @@ minetest.register_on_player_receive_fields(function(player,formname,fields)
 		if string.sub(field,0,string.len("skins_set_")) == "skins_set_" then
 			skins.skins[player:get_player_name()] = skins.list[tonumber(string.sub(field,string.len("skins_set_")+1))]
 			skins.update_player_skin(player)
+			skins.save()
 			inventory_plus.set_inventory_formspec(player,skins.formspec.main(player:get_player_name()))
 		end
 		if string.sub(field,0,string.len("skins_page_")) == "skins_page_" then
