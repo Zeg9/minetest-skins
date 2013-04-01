@@ -92,11 +92,7 @@ skins.formspec.main = function(name)
 		if skins.get_type(skin) == skins.type.MODEL then
 			if smodel < page*8 then smodel = smodel + 1 else
 				if imodel < 8 then
-					if imodel < 4 then
-						formspec = formspec .. "image_button["..(imodel*2)..",2;2,1;"..skin..".png;skins_set_"..i..";]"
-					else
-						formspec = formspec .. "image_button["..((imodel-4)*2)..",3;2,1;"..skin..".png;skins_set_"..i..";]"
-					end
+					formspec = formspec .. "image_button["..(imodel)..",2;1,2;"..skin..".png_preview.png;skins_set_"..i..";]"
 				end
 				imodel = imodel +1
 			end

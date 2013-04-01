@@ -1,5 +1,5 @@
 #!/bin/sh
-cd previews
+cd .previews
 for i in ../skins/textures/character_*.png;
 do
 	cp $i ./character.png
