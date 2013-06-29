@@ -79,7 +79,8 @@ skins.formspec.main = function(name)
 		.. "label[0,.5;Your current skin:]"
 		.. "label[0,1.5;Choose a skin below:]"
 	if skins.get_type(skins.skins[name]) == skins.type.MODEL then
-		formspec = formspec .. "image[3,.5;2,1;"..skins.skins[name]..".png]"
+		formspec = formspec .. "image[3.5,0;1,2;"..skins.skins[name].."_preview.png]"
+		formspec = formspec .. "image[6,.5;2,1;"..skins.skins[name]..".png]"
 	elseif skins.get_type(skins.skins[name]) == skins.type.SPRITE then
 		formspec = formspec .. "image[3,0;1,2;"..skins.skins[name]..".png]"
 		formspec = formspec .. "image[4,0;1,2;"..skins.skins[name].."_back.png]"
@@ -92,7 +93,7 @@ skins.formspec.main = function(name)
 		if skins.get_type(skin) == skins.type.MODEL then
 			if smodel < page*8 then smodel = smodel + 1 else
 				if imodel < 8 then
-					formspec = formspec .. "image_button["..(imodel)..",2;1,2;"..skin..".png_preview.png;skins_set_"..i..";]"
+					formspec = formspec .. "image_button["..(imodel)..",2;1,2;"..skin.."_preview.png;skins_set_"..i..";]"
 				end
 				imodel = imodel +1
 			end
