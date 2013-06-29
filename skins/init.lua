@@ -110,10 +110,14 @@ skins.formspec.main = function(name)
 	end
 	if page > 0 then
 		formspec = formspec .. "button[0,7;1,.5;skins_page_"..(page-1)..";<<]"
+	else
+		formspec = formspec .. "button[0,7;1,.5;skins_page_"..page..";<<]"
 	end
-	formspec = formspec .. "label[3,6.5;Page "..page.."]"
+	formspec = formspec .. "button[.75,7;6.5,.5;skins_page_"..page..";Page "..(page+1).."]" -- a button is used so text is centered
 	if imodel > 8 or isprite > 8 then
 		formspec = formspec .. "button[7,7;1,.5;skins_page_"..(page+1)..";>>]"
+	else
+		formspec = formspec .. "button[7,7;1,.5;skins_page_"..page..";>>]"
 	end
 	return formspec
 end
