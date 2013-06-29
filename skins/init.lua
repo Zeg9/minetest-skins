@@ -86,26 +86,18 @@ skins.formspec.main = function(name)
 		formspec = formspec .. "image[3,0;1,2;"..skins.skins[name]..".png]"
 		formspec = formspec .. "image[4,0;1,2;"..skins.skins[name].."_back.png]"
 	end
-	local imodel = 0
-	local isprite = 0
-	local smodel = 0 -- Skip models, used for pages
-	local ssprite = 0 -- Skip sprites, used for pages
+	local index = 0
+	local skip = 0 -- Skip skins, used for pages
 	for i, skin in ipairs(skins.list) do
-		if skins.get_type(skin) == skins.type.MODEL then
-			if smodel < page*8 then smodel = smodel + 1 else
-				if imodel < 8 then
-					formspec = formspec .. "image_button["..(imodel)..",2;1,2;"..skin.."_preview.png;skins_set_"..i..";]"
+		if skip < page*16 then skip = skip + 1 else
+			if index < 16 then
+				formspec = formspec .. "image_button["..(index%8)..","..((math.floor(index/8)+1)*2+.5)..";1,2;"..skin
+				if skins.get_type(skin) == skins.type.MODEL then
+					formspec = formspec .. "_preview"
 				end
-				imodel = imodel +1
+				formspec = formspec .. ".png;skins_set_"..i..";]"
 			end
-		end
-		if skins.get_type(skin) == skins.type.SPRITE then
-			if ssprite < page*8 then ssprite = ssprite + 1 else
-				if isprite < 8 then
-					formspec = formspec .. "image_button["..(isprite)..",4.5;1,2;"..skin..".png;skins_set_"..i..";]"
-				end
-				isprite = isprite +1
-			end
+			index = index +1
 		end
 	end
 	if page > 0 then
@@ -113,8 +105,8 @@ skins.formspec.main = function(name)
 	else
 		formspec = formspec .. "button[0,7;1,.5;skins_page_"..page..";<<]"
 	end
-	formspec = formspec .. "button[.75,7;6.5,.5;skins_page_"..page..";Page "..(page+1).."]" -- a button is used so text is centered
-	if imodel > 8 or isprite > 8 then
+	formspec = formspec .. "button[.75,7;6.5,.5;skins_page_"..page..";Page "..(page+1).."/"..math.floor(#skins.list/16+1).."]" -- a button is used so text is centered
+	if index > 16 then
 		formspec = formspec .. "button[7,7;1,.5;skins_page_"..(page+1)..";>>]"
 	else
 		formspec = formspec .. "button[7,7;1,.5;skins_page_"..page..";>>]"
