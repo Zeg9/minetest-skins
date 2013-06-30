@@ -1,9 +1,8 @@
 #!/bin/sh
-# This script can use pngcrush to reduce the size of your skins,
-# and imagemagick to remove metadata from them. You can disable both of them below.
+# This script can use pngcrush to reduce the size of your skins.
+# You can disable it below.
 # Settings:
 PNGCRUSH=true
-IMAGEMAGICK=true
 OUT=skins/textures/
 #-------------------
 
@@ -39,9 +38,6 @@ then
 					(( nextid=(nextid+1) ))
 					OUTPUT="$OUT/${texture_type}_$nextid.png"
 					echo "$i => $OUTPUT"
-					if $IMAGEMAGICK
-					then convert -strip $i $i
-					fi
 					if $PNGCRUSH
 					then pngcrush $i $OUTPUT
 					else cp $i $OUTPUT
@@ -49,9 +45,6 @@ then
 					if [ $texture_type = "player" ]
 					then
 						OUTPUT_BACK="$OUT/${texture_type}_${nextid}_back.png"
-						if $IMAGEMAGICK
-						then convert -strip "${filename}_back.png" "${filename}_back.png"
-						fi
 						if $PNGCRUSH
 						then pngcrush "${filename}_back.png" $OUTPUT_BACK
 						else cp "${filename}_back.png" $OUTPUT_BACK
