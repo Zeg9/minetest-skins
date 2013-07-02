@@ -1,3 +1,4 @@
 *~
-.previews/character*.png
 .previews/output
+.previews/blender_out
+.previews/pngcrush_output

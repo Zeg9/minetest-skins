@@ -1,35 +1,48 @@
 #!/bin/sh
 # This script is used to generate the previews needed by the mod
-# It requires blender (2.6x is tested, but others versions might work)
-# ...as well as pngcrush to reduce the size. If you don't want to use pngcrush, set PNGCRUSH=false below
-# ...also, you will need imagemagick in order to remove the metadata from blender's output (allows to only upload the different files to git)
-#    same as for pngcrush, there is a setting below to disable it
+# It requires blender with the latest python API (2.6x is tested)
+# A script that works with older blenders and, maybe, without python, is available in older commits.
+# It can also use pngcrush and imagemagick to reduce output size,
+#   please enable them if you want to push to the git repository of the mod.
+# Pngcrush output will be written to .previews/pngcrush_output
+# Warning: any file in .previews/ and skins/textures might be deleted without asking.
 PNGCRUSH=true
 IMAGEMAGICK=true
 cd .previews
 rm ../skins/textures/*_preview*.png # Remove all previous previews
+blender -b skin_previews.blend --python-text "Generate previews" > /dev/null
+if $IMAGEMAGICK
+	then echo "Stripping metadata from generated files..."
+	else echo "Moving files..."
+fi
+rm -rf output # remove my output
 mkdir -p output
-for i in ../skins/textures/character_*.png;
+for i in blender_out/character_*_00.png;
 do
-	cp $i ./character.png
-	blender --background character.blend \
-		--render-output "//character_##.png" -a
-	out_name=$(basename $i)
-	out_name="${out_name%.*}"
+	out_name=$(basename $i | sed -e 's/_00.png//g')
 	out_file=output/"$out_name"_preview.png
-	back_out_file=output/"$out_name"_preview_back.png
 	if $IMAGEMAGICK
 	then
-		convert -strip character_00.png $out_file
-		convert -strip character_01.png $back_out_file
+		convert -strip $i $out_file
 	else
-		mv character_00.png $out_file
-		mv character_01.png $back_out_file
+		mv $i $out_file
 	fi
-	echo "Generated preview for $i"
+done
+for i in blender_out/character_*_01.png;
+do
+	out_name=$(basename $i | sed -e 's/_01.png//g')
+	out_file=output/"$out_name"_preview_back.png
+	if $IMAGEMAGICK
+	then
+		convert -strip $i $out_file
+	else
+		mv $i $out_file
+	fi
 done
 if $PNGCRUSH
-	then pngcrush -d ../skins/textures/ output/*_preview*.png
+	then
+		echo "Running pngcrush..."
+		pngcrush -d ../skins/textures/ output/*_preview*.png 2> pngcrush_output
 	else mv output/*_preview*.png ../skins/textures/
 fi
 echo "Generated previews !"
