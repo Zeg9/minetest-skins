@@ -2,7 +2,7 @@
 # This script is used to generate the previews needed by the mod
 # It requires blender with the latest python API (2.6x is tested)
 # A script that works with older blenders and, maybe, without python, is available in older commits.
-# It can also use pngcrush and imagemagick to reduce output size,
+# This script can also use pngcrush and imagemagick to reduce output size,
 #   please enable them if you want to push to the git repository of the mod.
 # Pngcrush output will be written to .previews/pngcrush_output
 # Warning: any file in .previews/ and skins/textures might be deleted without asking.
@@ -45,4 +45,4 @@ if $PNGCRUSH
 		pngcrush -d ../skins/textures/ output/*_preview*.png 2> pngcrush_output
 	else mv output/*_preview*.png ../skins/textures/
 fi
-echo "Generated previews !"
+echo "Done !"
