@@ -9,6 +9,8 @@ If you add a 3D skin, please re-run ./generate_previews.sh
 
 Feel free to send your skins via pull request or PM on the forum ! (with license information)
 
+TODO: add authors and skins names in the GUI.
+
 Credits (also applies to back and previews of skins, please tell me if I missed someone):
 
 From minetest_game (CC BY-SA 3.0):
@@ -62,6 +64,7 @@ InfinityProject:
 prof_turbo (WTFPL):
 	player_11.png
 	character_27.png
+	character_29.png
 cisoun (WTFPL):
 	player_12.png
 Stuart Jones (WTFPL):
