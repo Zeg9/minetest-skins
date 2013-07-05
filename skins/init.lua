@@ -21,36 +21,10 @@ skins.get_type = function(texture)
 	end
 end
 
-dofile(minetest.get_modpath("skins").."/skinlist.lua")
-
-skins.file = minetest.get_worldpath() .. "/skins.mt"
-skins.load = function()
-	local input = io.open(skins.file, "r")
-	local data = nil
-	if input then
-		data = input:read('*all')
-	end
-	if data and data ~= "" then
-		lines = string.split(data,"\n")
-		for _, line in ipairs(lines) do
-			data = string.split(line, ' ', 2)
-			skins.skins[data[1]] = data[2]
-		end
-		io.close(input)
-	end
-end
-skins.load()
-print("[Skins] Done loading !")
-
-skins.save = function()
-	local output = io.open(skins.file,'w')
-	for name, skin in pairs(skins.skins) do
-		if name and skin then
-			output:write(name .. " " .. skin .. "\n")
-		end
-	end
-	io.close(output)
-end
+skins.modpath = minetest.get_modpath("skins")
+dofile(skins.modpath.."/skinlist.lua")
+dofile(skins.modpath.."/meta.lua")
+dofile(skins.modpath.."/players.lua")
 
 skins.update_player_skin = function(player)
 	name = player:get_player_name()
@@ -76,22 +50,34 @@ skins.formspec.main = function(name)
 	if page == nil then page = 0 end
 	local formspec = "size[8,7.5]"
 		.. "button[0,0;2,.5;main;Back]"
-		.. "label[0,.5;Your current skin:]"
-		.. "label[0,1.5;Choose a skin below:]"
 	if skins.get_type(skins.skins[name]) == skins.type.MODEL then
-		formspec = formspec .. "image[3,0;1,2;"..skins.skins[name].."_preview.png]"
-		formspec = formspec .. "image[4,0;1,2;"..skins.skins[name].."_preview_back.png]"
-		formspec = formspec .. "image[6,.5;2,1;"..skins.skins[name]..".png]"
-	elseif skins.get_type(skins.skins[name]) == skins.type.SPRITE then
-		formspec = formspec .. "image[3,0;1,2;"..skins.skins[name]..".png]"
-		formspec = formspec .. "image[4,0;1,2;"..skins.skins[name].."_back.png]"
+		formspec = formspec
+			.. "image[0,.75;1,2;"..skins.skins[name].."_preview.png]"
+			.. "image[1,.75;1,2;"..skins.skins[name].."_preview_back.png]"
+			.. "label[6,.5;Raw texture:]"
+			.. "image[6,1;2,1;"..skins.skins[name]..".png]"
+		
+	else
+		formspec = formspec
+			.. "image[0,.75;1,2;"..skins.skins[name]..".png]"
+			.. "image[1,.75;1,2;"..skins.skins[name].."_back.png]"
+	end
+	local meta = skins.meta[skins.skins[name]]
+	formspec = formspec
+		.. "label[2,.5;Name: "..meta.name.."]"
+		.. "label[2,1;Author: "..meta.author.."]"
+	if meta.description then
+		formspec = formspec .. "label[2,1.5;"..meta.description.."]"
+	end
+	if meta.comment then
+		formspec = formspec .. 'label[2,2;"'..meta.comment..'"]'
 	end
 	local index = 0
 	local skip = 0 -- Skip skins, used for pages
 	for i, skin in ipairs(skins.list) do
 		if skip < page*16 then skip = skip + 1 else
 			if index < 16 then
-				formspec = formspec .. "image_button["..(index%8)..","..((math.floor(index/8)+1)*2+.5)..";1,2;"..skin
+				formspec = formspec .. "image_button["..(index%8)..","..((math.floor(index/8))*2+3)..";1,2;"..skin
 				if skins.get_type(skin) == skins.type.MODEL then
 					formspec = formspec .. "_preview"
 				end
