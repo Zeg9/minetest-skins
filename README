@@ -2,10 +2,14 @@ minetest-skins
 ==============
 
 Skins mod for minetest.
-Use install_skin.py -3d to add a 3D skin,
-install_skin.py -2d to add a 2D skin.
+To add 3D skins:
+./install_skin.sh -3d <files>
+To add 2D skins:
+./install_skin.sh -2d <files>
 
 If you add a 3D skin, please re-run ./generate_previews.sh
+Please run ./set_meta.sh after adding any skin, this will allow you to set the name, author and description for them.
+Alternatively, you can directly edit the meta file in skins/meta/*.txt
 
 Feel free to send your skins via pull request or PM on the forum ! (with license information)
 
