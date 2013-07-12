@@ -63,14 +63,19 @@ skins.formspec.main = function(name)
 			.. "image[1,.75;1,2;"..skins.skins[name].."_back.png]"
 	end
 	local meta = skins.meta[skins.skins[name]]
-	formspec = formspec
-		.. "label[2,.5;Name: "..meta.name.."]"
-		.. "label[2,1;Author: "..meta.author.."]"
-	if meta.description then
-		formspec = formspec .. "label[2,1.5;"..meta.description.."]"
-	end
-	if meta.comment then
-		formspec = formspec .. 'label[2,2;"'..meta.comment..'"]'
+	if meta then
+		if meta.name then
+			formspec = formspec .. "label[2,.5;Name: "..meta.name.."]"
+		end
+		if meta.author then
+			formspec = formspec .. "label[2,1;Author: "..meta.author.."]"
+		end
+		if meta.description then
+			formspec = formspec .. "label[2,1.5;"..meta.description.."]"
+		end
+		if meta.comment then
+			formspec = formspec .. 'label[2,2;"'..meta.comment..'"]'
+		end
 	end
 	local index = 0
 	local skip = 0 -- Skip skins, used for pages
