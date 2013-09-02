@@ -2,3 +2,6 @@
 .previews/output
 .previews/blender_out
 .previews/pngcrush_output
+tmp.png
+skins/textures/*.png
+skins/meta/*.txt
