@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # This script can use pngcrush to reduce the size of your skins.
 # You can disable it below.
 # Settings:
