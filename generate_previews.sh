@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # This script is used to generate the previews needed by the mod
 # It requires blender with the latest python API (2.6x is tested)
 # A script that works with older blenders and, maybe, without python, is available in older commits.
